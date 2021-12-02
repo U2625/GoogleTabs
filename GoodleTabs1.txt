@@ -1,0 +1,80 @@
+function onOpen() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Лист2");
+  var entries = [{name : "Посчитай",functionName : "Union"}];
+  ss.addMenu("Скрипты", entries);
+};
+
+function Union(){
+  MakeHappy()
+  myfunction()
+}
+
+function MakeHappy(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Лист2");
+  var range = sheet.getRange("B2:G10");
+  for (var col=range.getColumn()-1;col < range.getNumColumns()+range.getColumn()-1;col++){
+    Logger.log("---------");
+    
+    for (var row=range.getRow()-1;row < range.getNumRows()+range.getRow()-1;row++){
+      var cell = range.getCell(row, col);
+      Logger.log(cell.getValue());
+      var newRow = range.getNumRows()+range.getRow()+row;
+      var cellSetData = sheet.getRange(newRow,col+1);
+      cellSetData.clearFormat();
+      cellSetData.setHorizontalAlignment("center");
+      cellSetData.setVerticalAlignment("center");
+      if (cell.getValue()=="")
+      {
+        return;
+      }
+      switch (cell.getValue()){
+        case "легко":
+          cellSetData.setValue(1);
+          break;
+        case "средне":
+          cellSetData.setValue(2);
+            break;
+        case "тяжело":
+          cellSetData.setValue(3);
+            break;  
+        case "щто":
+          cellSetData.setValue(0);
+            break;
+        default:
+            break;
+      }
+    }
+    
+  }
+
+}
+
+function myfunction(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Лист2");
+  var range = sheet.getRange("B12:H20");
+  for (var col=range.getColumn()-1;col < range.getNumColumns()+range.getColumn()-1;col++){
+    Logger.log("---------");
+    var sum = 0;
+    var countValues=0;
+    var lastRow=range.getNumRows()+range.getRow();
+    for (var row=range.getRow()-11;row < range.getNumRows()+range.getRow()-11;row++){
+      var cell = range.getCell(row, col);
+      Logger.log(cell.getValue());
+      var newRow = range.getNumRows()+range.getRow()+row;
+      
+      if (cell.getValue()>0)
+      {
+        countValues++;
+      }
+      sum=cell.getValue()+sum;
+      
+    }
+    var cellSetData = sheet.getRange(lastRow +1,col+1);
+    var result = sum/countValues;
+    cellSetData.setValue(result);
+    
+  }
+};
